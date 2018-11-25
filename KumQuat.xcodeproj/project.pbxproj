@@ -19,6 +19,10 @@
 		66E8804021A36DDD00918EBA /* Vote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66E8803F21A36DDD00918EBA /* Vote.swift */; };
 		66E8804221A3758900918EBA /* ViewControllerUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66E8804121A3758900918EBA /* ViewControllerUserTableViewCell.swift */; };
 		66E8804421A380C900918EBA /* ViewControllerHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66E8804321A380C900918EBA /* ViewControllerHome.swift */; };
+		6841F2CB21A90D3B006FA965 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 6841F2CA21A90D3B006FA965 /* fonts */; };
+		6841F2CF21A919A7006FA965 /* LoginPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6841F2CE21A919A7006FA965 /* LoginPage.swift */; };
+		6841F2D221A95B2E006FA965 /* PostCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6841F2D021A95B2E006FA965 /* PostCellTableViewCell.swift */; };
+		6841F2D321A95B2E006FA965 /* PostCellTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6841F2D121A95B2E006FA965 /* PostCellTableViewCell.xib */; };
 		9EE41E8F21A4678B00E61EAC /* dbHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE41E8E21A4678A00E61EAC /* dbHandler.swift */; };
 /* End PBXBuildFile section */
 
@@ -171,6 +175,10 @@
 		66E8803F21A36DDD00918EBA /* Vote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vote.swift; sourceTree = "<group>"; };
 		66E8804121A3758900918EBA /* ViewControllerUserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerUserTableViewCell.swift; sourceTree = "<group>"; };
 		66E8804321A380C900918EBA /* ViewControllerHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerHome.swift; sourceTree = "<group>"; };
+		6841F2CA21A90D3B006FA965 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
+		6841F2CE21A919A7006FA965 /* LoginPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPage.swift; sourceTree = "<group>"; };
+		6841F2D021A95B2E006FA965 /* PostCellTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCellTableViewCell.swift; sourceTree = "<group>"; };
+		6841F2D121A95B2E006FA965 /* PostCellTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostCellTableViewCell.xib; sourceTree = "<group>"; };
 		9EE41E8E21A4678A00E61EAC /* dbHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = dbHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -223,12 +231,16 @@
 		66E87F95219DF8EA00918EBA /* KumQuat */ = {
 			isa = PBXGroup;
 			children = (
+				6841F2CA21A90D3B006FA965 /* fonts */,
 				9EE41E8E21A4678A00E61EAC /* dbHandler.swift */,
 				66E87F96219DF8EA00918EBA /* AppDelegate.swift */,
 				66E87F98219DF8EA00918EBA /* ViewController.swift */,
 				66E8804321A380C900918EBA /* ViewControllerHome.swift */,
 				66E8804121A3758900918EBA /* ViewControllerUserTableViewCell.swift */,
+				6841F2CE21A919A7006FA965 /* LoginPage.swift */,
 				66E87F9A219DF8EA00918EBA /* Main.storyboard */,
+				6841F2D021A95B2E006FA965 /* PostCellTableViewCell.swift */,
+				6841F2D121A95B2E006FA965 /* PostCellTableViewCell.xib */,
 				66E87F9D219DF8EC00918EBA /* Assets.xcassets */,
 				66E87F9F219DF8EC00918EBA /* LaunchScreen.storyboard */,
 				66E87FA2219DF8EC00918EBA /* Info.plist */,
@@ -512,7 +524,9 @@
 			files = (
 				66E87FA1219DF8EC00918EBA /* LaunchScreen.storyboard in Resources */,
 				66E87F9E219DF8EC00918EBA /* Assets.xcassets in Resources */,
+				6841F2D321A95B2E006FA965 /* PostCellTableViewCell.xib in Resources */,
 				66E87F9C219DF8EA00918EBA /* Main.storyboard in Resources */,
+				6841F2CB21A90D3B006FA965 /* fonts in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -538,7 +552,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				66E87F99219DF8EA00918EBA /* ViewController.swift in Sources */,
+				6841F2CF21A919A7006FA965 /* LoginPage.swift in Sources */,
 				66E8804221A3758900918EBA /* ViewControllerUserTableViewCell.swift in Sources */,
+				6841F2D221A95B2E006FA965 /* PostCellTableViewCell.swift in Sources */,
 				66E8804421A380C900918EBA /* ViewControllerHome.swift in Sources */,
 				66E8803C21A36C4300918EBA /* User.swift in Sources */,
 				66E8804021A36DDD00918EBA /* Vote.swift in Sources */,

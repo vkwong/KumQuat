@@ -19,4 +19,19 @@ class Post {
         self.isAnon = isAnon
         self.parent_post = parent_post
     }
+    
+    //used for printing
+    func toString() -> String {
+        return """
+            Post ID: \(self.id)
+            Author: \(self.author!)
+            Content: \(self.content!)
+            Dorm: \(self.dorm!)
+            College: \(self.college!)
+            Share Location: \(self.locationShared)
+            Anonymous: \(self.isAnon)
+            Parent Post: \(self.parent_post)
+            ========================================
+        """
+    }
 }

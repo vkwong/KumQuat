@@ -101,6 +101,22 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         dbHandler = DBHandler()
+
+//        if dbHandler.createPost(author: "Bartek", content: "fuck", dorm: "Porter", college: "Beloit College", locationShared: true, isAnon: false, parent_post: -1){
+//            print("post added")
+//        }else {
+//            print("post not added")
+//        }
+
+//        Examples
+//        let postsEx1 = dbHandler.getAllPosts()
+//        let postsEx2 = dbHandler.getAllCollegePosts(college: "Kalamazoo College")
+//        let postsEx3 = dbHandler.getAllDormPosts(dorm: "Hall1")
+//
+//        for p in postsEx1 {
+//            print(p.toString())
+//        }
+    
     }
     
     // referenced https://www.simplifiedios.net/swift-sqlite-tutorial/#Reading_Values

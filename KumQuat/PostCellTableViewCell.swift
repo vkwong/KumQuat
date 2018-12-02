@@ -65,9 +65,7 @@ class PostCellTableViewCell: UITableViewCell {
                 viewController.feedTableView.reloadData()
             }
             
-        } else {
-            print("current user is -1")
-        }
+        } 
         
     }
     

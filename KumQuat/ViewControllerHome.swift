@@ -3,7 +3,7 @@
 //  KumQuat
 //
 //  Created by Vivian Wong on 11/19/18.
-//  Copyright © 2018 Vivian Wong. All rights reserved.
+//  Copyright © 2018 Zach LaJuan Miller. All rights reserved.
 //
 
 import Foundation
@@ -11,7 +11,7 @@ import Foundation
 import UIKit
 import SQLite3
 
-class ViewControllerHome: UIViewController, UITableViewDataSource {
+class ViewControllerHome: UIViewController, UITableViewDataSource, UITableViewDelegate {
     let dbHandler: DBHandler = DBHandler()
     var posts: [Post] = [] {
         didSet {
@@ -24,9 +24,7 @@ class ViewControllerHome: UIViewController, UITableViewDataSource {
     var userEmail: String!
     var userDorm: String!
     var userCollege: String!
-    
-//    var currentUser: User = User(id: 1, username: "vbach", email: "user@wustl.edu", password: "cskaMoskwa", dorm: "dorm1", college: "college1")
-    
+
     @IBOutlet weak var feedTableView: UITableView!
     @IBOutlet weak var channelSwitch: UISegmentedControl!
     @IBOutlet weak var postBtn: UIButton!
@@ -46,6 +44,7 @@ class ViewControllerHome: UIViewController, UITableViewDataSource {
         feedTableView.register(postCell, forCellReuseIdentifier: "postCell")
         feedTableView.dataSource = self
         feedTableView.rowHeight = 100
+        feedTableView.delegate = self
         
 //        dbHandler.dropTables()
                 
@@ -74,12 +73,22 @@ class ViewControllerHome: UIViewController, UITableViewDataSource {
         // Dispose of any resources that can be recreated.
     }
     
+
+    
     func updateUserData(){
         userId = UserDefaults().integer(forKey: "id")
         username = UserDefaults().string(forKey: "username")
         userEmail = UserDefaults().string(forKey: "email")
         userDorm = UserDefaults().string(forKey: "dorm")
         userCollege = UserDefaults().string(forKey: "school")
+    }
+    
+    func tableView(_ tableView:UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        let replyVC = storyBoard.instantiateViewController(withIdentifier: "ReplyVC") as! PostReplyViewController
+        replyVC.parentPost = posts[indexPath.row]
+        self.navigationController?.pushViewController(replyVC, animated: true)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -133,7 +142,7 @@ class ViewControllerHome: UIViewController, UITableViewDataSource {
             var postDorm = "n/a"
             var postCollege = "n/a"
             
-            if channelSwitch.selectedSegmentIndex == 0{
+            if channelSwitch.selectedSegmentIndex == 0 {
                 postCollege = UserDefaults.standard.object(forKey: "school") as? String ?? "n/a"
             } else {
                 postDorm = UserDefaults.standard.object(forKey: "dorm") as? String ?? "n/a"
@@ -145,10 +154,12 @@ class ViewControllerHome: UIViewController, UITableViewDataSource {
             vc.authorId = userId
             vc.dorm = postDorm
             vc.college = postCollege
+            return
         } else {
             print("settings ")
             return
         }
+        
     }
     
     

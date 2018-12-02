@@ -82,10 +82,12 @@ class PostReplyViewController: UIViewController, UITableViewDataSource {
         }
     }
     @IBAction func replySendBtn(_ sender: UIButton) {
-        if dbHandler!.createPost(author: currentUserId!, content: replyMessage.text!, dorm: parentPost.dorm!, college: parentPost.college!, locationShared: false, isAnon: true, timestamp: Int(NSDate().timeIntervalSince1970), parent_post: parentPost.id){
-            replies = dbHandler.getReplies(postId: parentPost.id)
-            childTableView.reloadData()
-            replyMessage.text! = ""
+        if replyMessage.text!.count > 3 {
+            if dbHandler!.createPost(author: currentUserId!, content: replyMessage.text!, dorm: parentPost.dorm!, college: parentPost.college!, locationShared: false, isAnon: true, timestamp: Int(NSDate().timeIntervalSince1970), parent_post: parentPost.id){
+                replies = dbHandler.getReplies(postId: parentPost.id)
+                childTableView.reloadData()
+                replyMessage.text! = ""
+            }
         }
     }
     

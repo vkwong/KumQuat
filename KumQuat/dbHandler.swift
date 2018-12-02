@@ -112,7 +112,7 @@ class DBHandler: NSObject {
         guard let path = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.cachesDirectory, FileManager.SearchPathDomainMask.userDomainMask, true).first else{
             return
         }
-        print("\(path)")
+//        print("\(path)")
         
         let filePath = (path as NSString).appendingPathComponent(DBHandler.DATABASE_NAME)
         guard let cFilePath = filePath.cString (using: String.Encoding.utf8) else{
@@ -124,38 +124,23 @@ class DBHandler: NSObject {
     
     // create tables
     func createTable(){
-        if execSQL(sql: DBHandler.CREATE_USERS_TABLE){
-            print("created Users table")
-        } else {
-            print("failed to create Users table")
+        if !execSQL(sql: DBHandler.CREATE_USERS_TABLE){
             return
         }
         
-        if execSQL(sql: DBHandler.CREATE_POSTS_TABLE) {
-            print("created Posts table")
-        } else {
-            print("failed to create Posts table")
+        if !execSQL(sql: DBHandler.CREATE_POSTS_TABLE) {
             return
         }
         
-        if execSQL(sql: DBHandler.CREATE_VOTES_TABLE) {
-            print("created Votes table")
-        } else {
-            print("failed to create Votes table")
+        if !execSQL(sql: DBHandler.CREATE_VOTES_TABLE) {
             return
         }
         
-        if execSQL(sql: DBHandler.CREATE_REPORTS_TABLE) {
-            print("created Reports table")
-        } else {
-            print("failed to create Reports table")
+        if !execSQL(sql: DBHandler.CREATE_REPORTS_TABLE) {
             return
         }
         
-        if execSQL(sql: DBHandler.CREATE_FEEDBACK_TABLE) {
-            print("created Feedback table")
-        } else {
-            print("failed to create Feedback table")
+        if !execSQL(sql: DBHandler.CREATE_FEEDBACK_TABLE) {
             return
         }
         
@@ -210,11 +195,6 @@ class DBHandler: NSObject {
             sqlite3_finalize(stmt)
             
             return true
-        //}
-        //else {
-        //    print("Username has existed!")
-        //    return false
-        //}
     }
     
     func verifyUserPassLogin(user: String, pass: String) -> [User] {

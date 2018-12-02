@@ -170,11 +170,7 @@ class SettingsViewController: UIViewController {
         self.present(alert, animated: true)
     }
 
-    @IBAction func back(_ sender: Any) {
-        //TODO: change the ViewController to the indentifier of the previous view
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ViewControllerHome")
-        self.present(vc!, animated: true, completion: nil)
-    }
+
     
     @IBAction func save(_ sender: Any) {
         let newSchool = School.titleLabel!.text!

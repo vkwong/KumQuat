@@ -31,16 +31,18 @@ class PostChoice: UIViewController {
 
     @IBAction func postAsVisible(_ sender: UIButton) {
         if dbHandler!.createPost(author: authorId!, content: message!, dorm: dorm!, college: college!, locationShared: false, isAnon: false, timestamp: Int(NSDate().timeIntervalSince1970), parent_post: -1){
-            
         }
         
+//        self.navigationController?.popViewController(animated: true)
         performSegue(withIdentifier: "visibleToFeed", sender: self)
     }
     
     @IBAction func postAsAnonymous(_ sender: UIButton) {
         if dbHandler!.createPost(author: authorId!, content: message!, dorm: dorm!, college: college!, locationShared: false, isAnon: true, timestamp: Int(NSDate().timeIntervalSince1970), parent_post: -1){
-            
         }
+        
+//        self.navigationController?.popViewController(animated: true)
         performSegue(withIdentifier: "anonToFeed", sender: self)
     }
+    
 }

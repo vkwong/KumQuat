@@ -3,7 +3,7 @@
 //  KumQuat
 //
 //  Created by Vivian Wong on 11/19/18.
-//  Copyright © 2018 Zach LaJuan Miller. All rights reserved.
+//  Copyright © 2018 KumQuat. All rights reserved.
 //
 
 import Foundation
@@ -31,10 +31,12 @@ class ViewControllerHome: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var postMessage: UITextField!
     
     @IBAction func goToSettings(_ sender: UIButton) {
-        performSegue(withIdentifier: "feedToSettings", sender: self)
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        let settingsVC = storyBoard.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
+        self.navigationController?.pushViewController(settingsVC, animated: true)
+//        performSegue(withIdentifier: "feedToSettings", sender: self)
     }
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         updateUserData()
@@ -46,8 +48,6 @@ class ViewControllerHome: UIViewController, UITableViewDataSource, UITableViewDe
         feedTableView.rowHeight = 100
         feedTableView.delegate = self
         
-//        dbHandler.dropTables()
-                
         if channelSwitch.selectedSegmentIndex == 0 {
             posts = dbHandler.getAllCollegePosts(college: userCollege)
         } else {
@@ -84,7 +84,6 @@ class ViewControllerHome: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func tableView(_ tableView:UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         let replyVC = storyBoard.instantiateViewController(withIdentifier: "ReplyVC") as! PostReplyViewController
         replyVC.parentPost = posts[indexPath.row]
@@ -119,11 +118,9 @@ class ViewControllerHome: UIViewController, UITableViewDataSource, UITableViewDe
         let channel = channelSwitch.selectedSegmentIndex
         if (channel == 0) {
             posts = dbHandler.getAllCollegePosts(college: userCollege)
-            print("school channel")
         }
         else if (channel == 1) {
             posts = dbHandler.getAllDormPosts(dorm: userDorm)
-            print("dorm channel")
         }
         
         feedTableView.reloadData()
@@ -131,7 +128,9 @@ class ViewControllerHome: UIViewController, UITableViewDataSource, UITableViewDe
     
     
     @IBAction func submitPost(_ sender: Any) {
-        performSegue(withIdentifier: "anonChoiceSegue", sender: self)
+        if postMessage.text!.count > 3 {
+            performSegue(withIdentifier: "anonChoiceSegue", sender: self)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -156,7 +155,6 @@ class ViewControllerHome: UIViewController, UITableViewDataSource, UITableViewDe
             vc.college = postCollege
             return
         } else {
-            print("settings ")
             return
         }
         

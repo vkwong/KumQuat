@@ -2,6 +2,39 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:KumQuat.xcodeproj">
+      location = "group:/Users/labuser/Documents/GitHub/KumQuat/KumQuat/SettingsController.swift">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/labuser/Documents/GitHub/KumQuat/KumQuat/PostChoice.swift">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/labuser/Documents/GitHub/KumQuat/KumQuat/ChildCell.swift">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/labuser/Documents/GitHub/KumQuat/KumQuat/ChildCell.xib">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/labuser/Documents/GitHub/KumQuat/KumQuat/ParentCell.swift">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/labuser/Documents/GitHub/KumQuat/KumQuat/ParentCell.xib">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/labuser/Documents/GitHub/KumQuat/KumQuat/DormChannel.swift">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/labuser/Documents/GitHub/KumQuat/KumQuat/DormChannel.swift">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/labuser/Documents/GitHub/KumQuat/KumQuat/DormChannel.swift">
+   </FileRef>
+   <FileRef
+      location = "group:../DormChannel.swift">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/labuser/Documents/GitHub/KumQuat/KumQuat/down-arrow.png">
+   </FileRef>
+   <FileRef
+      location = "self:">
    </FileRef>
 </Workspace>

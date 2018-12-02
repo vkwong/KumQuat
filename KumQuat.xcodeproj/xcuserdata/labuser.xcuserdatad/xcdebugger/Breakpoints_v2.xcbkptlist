@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "KumQuat/ViewControllerHome.swift"
+            timestampString = "565370553.723338"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "16"
+            endingLineNumber = "16"
+            landmarkName = "posts"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "KumQuat.ViewControllerHome.posts.getter : Swift.Array&lt;KumQuat.Post&gt;"
+                  moduleName = "KumQuat"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/labuser/Documents/GitHub/KumQuat/KumQuat/ViewControllerHome.swift"
+                  timestampString = "564829668.4940341"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "16"
+                  endingLineNumber = "16"
+                  offsetFromSymbolStart = "109">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "KumQuat.ViewControllerHome.posts.setter : Swift.Array&lt;KumQuat.Post&gt;"
+                  moduleName = "KumQuat"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/labuser/Documents/GitHub/KumQuat/KumQuat/ViewControllerHome.swift"
+                  timestampString = "564829668.495612"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "16"
+                  endingLineNumber = "16"
+                  offsetFromSymbolStart = "112">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "KumQuat.ViewControllerHome.init(nibName: Swift.Optional&lt;Swift.String&gt;, bundle: Swift.Optional&lt;__ObjC.Bundle&gt;) -&gt; KumQuat.ViewControllerHome"
+                  moduleName = "KumQuat"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/labuser/Documents/GitHub/KumQuat/KumQuat/ViewControllerHome.swift"
+                  timestampString = "564829668.4971941"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "16"
+                  endingLineNumber = "16"
+                  offsetFromSymbolStart = "52">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "KumQuat.ViewControllerHome.init(coder: __ObjC.NSCoder) -&gt; Swift.Optional&lt;KumQuat.ViewControllerHome&gt;"
+                  moduleName = "KumQuat"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/labuser/Documents/GitHub/KumQuat/KumQuat/ViewControllerHome.swift"
+                  timestampString = "564829668.498823"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "16"
+                  endingLineNumber = "16"
+                  offsetFromSymbolStart = "29">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

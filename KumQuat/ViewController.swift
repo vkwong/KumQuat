@@ -10,36 +10,22 @@
 import UIKit
 import SQLite3
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ViewController: UIViewController {
     
     var dbHandler: DBHandler!
     //var db: OpaquePointer?
     var userList = [User]()
+    var dorm_choices: [String] = []
+    var college: String!
     
     @IBOutlet weak var textFieldEmail: UITextField!
     @IBOutlet weak var textFieldUsername: UITextField!
     @IBOutlet weak var textFieldPassword: UITextField!
     
     @IBOutlet weak var registerButton: UIButton!
-    @IBOutlet weak var tableViewUsers: UITableView!
     
-    // For Users table view
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return userList.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! ViewControllerUserTableViewCell
-        
-        let user: User
-        user = userList[indexPath.row]
-        
-        cell.labelUsername.text = user.username
-            //! + ", " + user.email! + ", " + user.password!
-        
-        return cell
-    }
-    
+
+
     // Saves email, username, password into Users table - register new user-
     @IBAction func buttonRegisterUser(_ sender: Any) {
         //saving
@@ -54,6 +40,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             textFieldEmail.layer.borderColor = UIColor.red.cgColor
             return
         }
+        
         if (email?.isEmpty)! {
             textFieldEmail.layer.borderColor = UIColor.red.cgColor
             print("Email is required")
@@ -70,53 +57,47 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             return
         }
         
-        let arr = dbHandler.readUsers(condition: username!)
-        if !arr.isEmpty {
-            print("user has existed")
+        if email!.hasSuffix("wustl.edu"){
+            dorm_choices = Util.getDorms(college: .wustl)
+            college = "Washington University in St. Louis"
+        } else if email!.hasSuffix("slu.edu") {
+            dorm_choices = Util.getDorms(college: .slu)
+            college = "Saint Louis University"
+        } else if email!.hasSuffix("webster.edu"){
+            dorm_choices = Util.getDorms(college: .slu)
+            college = "Webster University"
+        } else {
+            print("we dont have your school")
             return
         }
         
-        if dbHandler.insertData(username: username!, password: password!, email: email!) {
-            print(username!)
-            print(email!)
-            print(password!)
-            print("User saved successfully")
+        if dbHandler.insertData(username: username!, password: password!, email: email!){
+        
+            let user = dbHandler.getUserFromUsername(username: username!)
+            
+            if  user.count == 1 {
+                print("User saved successfully")
+                UserDefaults.standard.set(user[0].id, forKey: "id")
+                UserDefaults.standard.set(username!, forKey: "username")
+                UserDefaults.standard.set(email!, forKey: "email")
+                UserDefaults.standard.set(password!, forKey: "password")
+                performSegue(withIdentifier: "pickDorm", sender: self)
+            } else {
+                print("user not found in table")
+            }
         } else {
-            print("fail to insert data")
+            print("failed to insert data")
         }
         
         textFieldUsername.text=""
         textFieldEmail.text=""
         textFieldPassword.text=""
         
-        //go to home page
-        let home = ViewControllerHome()
-        navigationController?.pushViewController(home, animated: true)
-        print("You have logged in")
-        
-        self.performSegue(withIdentifier: "loginSegueIdentifier", sender: self)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         dbHandler = DBHandler()
-
-//        if dbHandler.createPost(author: "Bartek", content: "fuck", dorm: "Porter", college: "Beloit College", locationShared: true, isAnon: false, parent_post: -1){
-//            print("post added")
-//        }else {
-//            print("post not added")
-//        }
-
-//        Examples
-//        let postsEx1 = dbHandler.getAllPosts()
-//        let postsEx2 = dbHandler.getAllCollegePosts(college: "Kalamazoo College")
-//        let postsEx3 = dbHandler.getAllDormPosts(dorm: "Hall1")
-//
-//        for p in postsEx1 {
-//            print(p.toString())
-//        }
-    
     }
     
     // referenced https://www.simplifiedios.net/swift-sqlite-tutorial/#Reading_Values
@@ -125,5 +106,20 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let vc = segue.destination as? DormChannel {
+            vc.dorms = dorm_choices
+            vc.college = college
+        } else {
+            return
+        }
+    }
+    
+    @IBAction func backToLogin(_ sender: UIButton) {
+        performSegue(withIdentifier: "cancelRegistration", sender: self)
+    }
+    
+    
 }
 

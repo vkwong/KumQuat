@@ -18,24 +18,29 @@ class ViewControllerHome: UIViewController, UITableViewDataSource {
             feedTableView.reloadData()
         }
     }
-
     
-    var currentUser: User = User(id: 1, username: "vbach", email: "user@wustl.edu", password: "cskaMoskwa", dorm: "dorm1", college: "college1")
+    var userId: Int!
+    var username: String!
+    var userEmail: String!
+    var userDorm: String!
+    var userCollege: String!
+    
+//    var currentUser: User = User(id: 1, username: "vbach", email: "user@wustl.edu", password: "cskaMoskwa", dorm: "dorm1", college: "college1")
     
     @IBOutlet weak var feedTableView: UITableView!
     @IBOutlet weak var channelSwitch: UISegmentedControl!
     @IBOutlet weak var postBtn: UIButton!
     @IBOutlet weak var postMessage: UITextField!
     
+    @IBAction func goToSettings(_ sender: UIButton) {
+        performSegue(withIdentifier: "feedToSettings", sender: self)
+    }
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        UserDefaults.standard.set(currentUser.id, forKey: "UserID")
-        UserDefaults.standard.set(currentUser.currentDorm, forKey: "UserDorm")
-        UserDefaults.standard.set(currentUser.currentCollege, forKey: "UserCollege")
-        // Do any additional setup after loading the view, typically from a nib.
-        
-//
-        print(dbHandler.insertData(username: "vbach", password: "324567hgfdd", email: "xxx@wustl.edu"))
+        updateUserData()
+
 
         let postCell = UINib(nibName: "PostCellTableViewCell", bundle: nil)
         feedTableView.register(postCell, forCellReuseIdentifier: "postCell")
@@ -43,30 +48,38 @@ class ViewControllerHome: UIViewController, UITableViewDataSource {
         feedTableView.rowHeight = 100
         
 //        dbHandler.dropTables()
-        
-        
+                
         if channelSwitch.selectedSegmentIndex == 0 {
-            posts = dbHandler.getAllCollegePosts(college: currentUser.currentCollege!)
+            posts = dbHandler.getAllCollegePosts(college: userCollege)
         } else {
-            posts = dbHandler.getAllDormPosts(dorm: currentUser.currentDorm!)
+            posts = dbHandler.getAllDormPosts(dorm: userDorm)
         }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        updateUserData()
         
-        if channelSwitch.selectedSegmentIndex == 0{
-            posts = dbHandler.getAllCollegePosts(college: currentUser.currentCollege!)
+        if channelSwitch.selectedSegmentIndex == 0 {
+            posts = dbHandler.getAllCollegePosts(college: userCollege)
         } else {
-            posts = dbHandler.getAllDormPosts(dorm: currentUser.currentDorm!)
+            posts = dbHandler.getAllDormPosts(dorm: userDorm)
         }
-        
+
         feedTableView.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func updateUserData(){
+        userId = UserDefaults().integer(forKey: "id")
+        username = UserDefaults().string(forKey: "username")
+        userEmail = UserDefaults().string(forKey: "email")
+        userDorm = UserDefaults().string(forKey: "dorm")
+        userCollege = UserDefaults().string(forKey: "school")
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -96,11 +109,11 @@ class ViewControllerHome: UIViewController, UITableViewDataSource {
     @IBAction func switchView(_ sender: UISegmentedControl) {
         let channel = channelSwitch.selectedSegmentIndex
         if (channel == 0) {
-            posts = dbHandler.getAllCollegePosts(college: currentUser.currentCollege!)
+            posts = dbHandler.getAllCollegePosts(college: userCollege)
             print("school channel")
         }
         else if (channel == 1) {
-            posts = dbHandler.getAllDormPosts(dorm: currentUser.currentDorm!)
+            posts = dbHandler.getAllDormPosts(dorm: userDorm)
             print("dorm channel")
         }
         
@@ -113,25 +126,29 @@ class ViewControllerHome: UIViewController, UITableViewDataSource {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let vc : PostChoice = segue.destination as! PostChoice
-        let message = postMessage.text!
-        let userId = UserDefaults.standard.object(forKey: "UserID") as? Int ?? -1
-        
-        var dorm = "n/a"
-        var college = "n/a"
-        
-        if channelSwitch.selectedSegmentIndex == 0{
-            college = UserDefaults.standard.object(forKey: "UserCollege") as? String ?? "n/a"
+        if let vc = segue.destination as? PostChoice{
+            let message = postMessage.text!
+            let userId = UserDefaults.standard.object(forKey: "id") as? Int ?? -1
+            
+            var postDorm = "n/a"
+            var postCollege = "n/a"
+            
+            if channelSwitch.selectedSegmentIndex == 0{
+                postCollege = UserDefaults.standard.object(forKey: "school") as? String ?? "n/a"
+            } else {
+                postDorm = UserDefaults.standard.object(forKey: "dorm") as? String ?? "n/a"
+            }
+            
+            vc.table = feedTableView
+            vc.dbHandler = dbHandler
+            vc.message = message
+            vc.authorId = userId
+            vc.dorm = postDorm
+            vc.college = postCollege
         } else {
-            dorm = UserDefaults.standard.object(forKey: "UserDorm") as? String ?? "n/a"
+            print("settings ")
+            return
         }
-        
-        vc.table = feedTableView
-        vc.dbHandler = dbHandler
-        vc.message = message
-        vc.authorId = userId
-        vc.dorm = dorm
-        vc.college = college
     }
     
     

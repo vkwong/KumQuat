@@ -11,7 +11,7 @@ import UIKit
 class PostCellTableViewCell: UITableViewCell {
     
     var postId:Int!
-    let currentUser: Int = UserDefaults.standard.object(forKey: "UserID") as? Int ?? -1
+    let currentUser: Int = UserDefaults.standard.integer(forKey: "id")
     var dbHandler: DBHandler!
     var viewController: ViewControllerHome!
     
@@ -47,7 +47,7 @@ class PostCellTableViewCell: UITableViewCell {
             numberReplies.text = "\(num_replies) replies"
         }
         let currentTime  = Int(NSDate().timeIntervalSince1970)
-        self.timestamp.text = convertUnixToHuman(seconds: currentTime - timestamp) + " ago"
+        self.timestamp.text = Util().convertUnixToHumanReadable(seconds: currentTime - timestamp) + " ago"
     }
     
     func setDatabaseHandler(handler: DBHandler){
@@ -65,6 +65,8 @@ class PostCellTableViewCell: UITableViewCell {
                 viewController.feedTableView.reloadData()
             }
             
+        } else {
+            print("current user is -1")
         }
         
     }

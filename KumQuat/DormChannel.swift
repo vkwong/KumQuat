@@ -11,7 +11,12 @@ class DormChannel: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
     
     @IBOutlet weak var dormPicker: UIPickerView!
     
-    let dorms = ["Zach Dorm", "Vivian Dorm", "Alex Dorm"]
+    var dorms: [String]!
+    var college: String!
+    var dbHandler: DBHandler!
+    var userId: Int!
+    
+    @IBOutlet weak var selectedDorm: UIPickerView!
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -30,7 +35,8 @@ class DormChannel: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        dbHandler = DBHandler()
+        userId = UserDefaults().integer(forKey: "id")
         // Do any additional setup after loading the view.
     }
 
@@ -40,7 +46,20 @@ class DormChannel: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
     }
     
     
-
+    @IBAction func joinDormChannel(_ sender: UIButton) {
+        let index = selectedDorm.selectedRow(inComponent: 0)
+        let dorm = dorms[index]
+        if dbHandler.update(newData: dorm, id: userId!, cond: 3) && dbHandler.update(newData: college!, id: userId!, cond: 4){
+            print("dorm updated to \(dorm)")
+            print("college updated to \(college!)")
+            UserDefaults.standard.set(dorm, forKey: "dorm")
+            UserDefaults.standard.set(college!, forKey: "school")
+            performSegue(withIdentifier: "dormSelected", sender: self)
+        } else {
+            return
+        }
+    }
+    
     /*
     // MARK: - Navigation
 

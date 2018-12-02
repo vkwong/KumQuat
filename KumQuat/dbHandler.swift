@@ -25,6 +25,8 @@ class DBHandler: NSObject {
     static var USERNAME: String = "username"
     static var PASSWORD: String = "password"
     static var EMAIL: String = "email"
+    static var USER_COLLEGE: String = "current_college"
+    static var USER_DORM: String = "current_dorm"
     
     static var AUTHOR: String = "author"
     static var CONTENT: String = "content"
@@ -48,7 +50,9 @@ class DBHandler: NSObject {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE NOT NULL,
         password TEXT NOT NULL,
-        email TEXT UNIQUE NOT NULL);
+        email TEXT UNIQUE NOT NULL,
+        current_dorm TEXT NOT NULL DEFAULT "n/a",
+        current_college TEXT NOT NULL DEFAULT "n/a");
     """
     
     static let CREATE_POSTS_TABLE: String = """
@@ -84,6 +88,14 @@ class DBHandler: NSObject {
         FOREIGN KEY (user) REFERENCES Users(id) ON DELETE CASCADE,
         PRIMARY KEY (post, user));
     """
+    
+    static var TBL_FEEDBACK: String = " Feedback"
+    static var QUESTION1: String = " question1"
+    static var QUESTION2: String = " question2"
+    static var QUESTION3: String = " question3"
+    static var OPTIONAL: String = " optional"
+    
+    static var CREATE_FEEDBACK_TABLE: String = "CREATE TABLE IF NOT EXISTS" + TBL_FEEDBACK + " (id INTEGER PRIMARY KEY AUTOINCREMENT," + QUESTION1 + " INTEGER UNIQUE NOT NULL," + QUESTION2 + " INTEGER UNIQUE NOT NULL," + QUESTION3 + " INTEGER UNIQUE NOT NULL," + OPTIONAL + " STRING);"
     
     override init() {
         super.init()
@@ -139,11 +151,19 @@ class DBHandler: NSObject {
             print("failed to create Reports table")
             return
         }
+        
+        if execSQL(sql: DBHandler.CREATE_FEEDBACK_TABLE) {
+            print("created Feedback table")
+        } else {
+            print("failed to create Feedback table")
+            return
+        }
+        
     }
     
     //drop tables (for testing purposes only)
     func dropTables(){
-        if(execSQL(sql: "DROP TABLE Votes;") && execSQL(sql: "DROP TABLE Posts;") && execSQL(sql: "DROP TABLE Users;")){
+        if(execSQL(sql: "DROP TABLE Votes;") && execSQL(sql: "DROP TABLE Posts;") && execSQL(sql: "DROP TABLE Users;") && execSQL(sql: "DROP TABLE Feedback;")){
             print("all tables succesfully dropped")
         } else {
             print("failed to drop tables")
@@ -197,8 +217,42 @@ class DBHandler: NSObject {
         //}
     }
     
-    func readUsers(condition: String) -> [User] {
-        let sql = "SELECT * FROM " + DBHandler.TBL_USER + " WHERE " + DBHandler.USERNAME + " = '\(condition)';";
+    func verifyUserPassLogin(user: String, pass: String) -> [User] {
+        let sql = "SELECT * FROM Users WHERE username='\(user)' AND password='\(pass)' "
+        
+        var user = [User]()
+        //sqlite3_stmt pointer
+        var stmt:OpaquePointer? = nil
+        
+        // compiler
+        let prepare_result = sqlite3_prepare(self.db, sql, -1, &stmt, nil)
+        if prepare_result != SQLITE_OK {
+            sqlite3_finalize(stmt)
+            if (sqlite3_errmsg(self.db)) != nil {
+                let msg = "SQLiteDB - failed to prepare SQL:\(sql)"
+                print(msg)
+            }
+        }
+        
+        //step
+        if (sqlite3_step(stmt) == SQLITE_ROW) {
+            
+            let id = sqlite3_column_int(stmt, 0)
+            let username = String.init(cString: UnsafePointer(sqlite3_column_text(stmt, 1)))
+            let password = String.init(cString: UnsafePointer(sqlite3_column_text(stmt, 2)))
+            let email = String.init(cString: UnsafePointer(sqlite3_column_text(stmt, 3)))
+            let dorm = String.init(cString: UnsafePointer(sqlite3_column_text(stmt, 4)))
+            let college = String.init(cString: UnsafePointer(sqlite3_column_text(stmt, 5)))
+            
+            let match = User(id: Int(id), username: username, email: email, password: password, dorm: dorm, college: college)
+            user.append(match)
+        }
+        sqlite3_finalize(stmt)
+        return user
+    }
+    
+    func readUsers(id: Int) -> [User] {
+        let sql = "SELECT * FROM " + DBHandler.TBL_USER + " WHERE id = '\(id)';";
         
         var userArr = [User]()
         
@@ -221,8 +275,10 @@ class DBHandler: NSObject {
             let username = String.init(cString: UnsafePointer(sqlite3_column_text(stmt, 1)))
             let password = String.init(cString: UnsafePointer(sqlite3_column_text(stmt, 2)))
             let email = String.init(cString: UnsafePointer(sqlite3_column_text(stmt, 3)))
+            let dorm = String.init(cString: UnsafePointer(sqlite3_column_text(stmt, 4)))
+            let college = String.init(cString: UnsafePointer(sqlite3_column_text(stmt, 5)))
             
-            let user = User(id: Int(id), username: username, email: email, password: password, dorm: "dorm1", college: "college1")
+            let user = User(id: Int(id), username: username, email: email, password: password, dorm: dorm, college: college)
             userArr.append(user)
         }
         
@@ -232,8 +288,22 @@ class DBHandler: NSObject {
         return userArr
     }
     
-    func update(password: String ,condition: String) -> Bool {
-        let sql = "UPDATE" + DBHandler.TBL_USER + " set" + DBHandler.PASSWORD + " = '\(password)'" + " WHERE" + DBHandler.USERNAME + " = '\(condition)';"
+    func update(newData: String, id: Int, cond: Int) -> Bool {
+        var sql = "UPDATE " + DBHandler.TBL_USER + " set "
+        let wh = " WHERE id = '\(id)';"
+        if cond == 0 {
+            sql = sql + DBHandler.USERNAME + " = '\(newData)'" + wh
+        } else if cond == 1 {
+            sql = sql + DBHandler.EMAIL + " = '\(newData)'" + wh
+        } else if cond == 2 {
+            sql = sql + DBHandler.PASSWORD + " = '\(newData)'" + wh
+        } else if cond == 3 {
+            sql = sql + DBHandler.USER_DORM + " = '\(newData)'" + wh
+        } else if cond == 4 {
+            sql = sql + DBHandler.USER_COLLEGE + " = '\(newData)'" + wh
+        }
+        
+        print(sql)
         
         var stmt:OpaquePointer? = nil
         
@@ -260,7 +330,6 @@ class DBHandler: NSObject {
         sqlite3_finalize(stmt)
         return true
     }
-    
     //adds a new post to Posts table
     func createPost(author: Int, content: String, dorm: String, college: String, locationShared: Bool, isAnon: Bool, timestamp: Int, parent_post: Int) -> Bool {
         
@@ -407,7 +476,7 @@ class DBHandler: NSObject {
         let sql = """
             SELECT Posts.*, Users.username
             FROM Posts INNER JOIN Users ON Posts.author = Users.id
-            WHERE Posts.dorm = (?) AND Posts.parent_post = -1
+            WHERE Posts.dorm = (?) AND Posts.dorm != 'n/a' AND Posts.parent_post = -1
             ORDER BY Posts.timestamp DESC;
         """
         
@@ -460,7 +529,7 @@ class DBHandler: NSObject {
         let sql = """
             SELECT Posts.*, Users.username
             FROM Posts INNER JOIN Users ON Posts.author = Users.id
-            WHERE Posts.college = (?) AND Posts.parent_post = -1
+            WHERE Posts.college = (?) AND Posts.college != 'n/a' AND Posts.parent_post = -1
             ORDER BY Posts.timestamp DESC;
         """
         var posts = [Post]()
@@ -747,6 +816,110 @@ class DBHandler: NSObject {
         sqlite3_finalize(stmt)
         
         return true
+    }
+    
+    
+    func insertFeedback(q1: Int, q2: Int, q3: Int, optional: String?) -> Bool{
+        let sql = "INSERT INTO" + DBHandler.TBL_FEEDBACK + " (" + DBHandler.QUESTION1 + "," + DBHandler.QUESTION2 + "," + DBHandler.QUESTION2 + "," + DBHandler.OPTIONAL + ") VALUES (?, ?, ?, ?);"
+        
+        guard let csql = sql.cString(using: String.Encoding.utf8) else{
+            return false
+        }
+        
+        var stmt: OpaquePointer? = nil
+        
+        // compile sql
+        if  sqlite3_prepare_v2(db, csql, -1, &stmt, nil) != SQLITE_OK{
+            return false
+        }
+        
+        sqlite3_bind_int(stmt, 1, Int32(q1))
+        sqlite3_bind_int(stmt, 2, Int32(q2))
+        sqlite3_bind_int(stmt, 3, Int32(q3))
+        sqlite3_bind_text(stmt, 4, optional?.cString(using: String.Encoding.utf8), -1, SQLITE_TRANSIENT)
+        
+        if sqlite3_step(stmt) != SQLITE_DONE{
+            return false
+        }
+        
+        // close
+        sqlite3_finalize(stmt)
+        
+        return true
+    }
+    
+    func deleteUser(id: Int) -> Bool{
+        let sql = """
+            DELETE FROM Users WHERE id=\(id);
+        """
+        
+        //sqlite3_stmt pointer
+        var stmt:OpaquePointer? = nil
+        
+        // compiler
+        let prepare_result = sqlite3_prepare(self.db, sql, -1, &stmt, nil)
+        if prepare_result != SQLITE_OK {
+            sqlite3_finalize(stmt)
+            if (sqlite3_errmsg(self.db)) != nil {
+                let msg = "SQLiteDB - failed to prepare SQL:\(sql)"
+                print(msg)
+            }
+            return false
+        }
+
+        
+        let step_result = sqlite3_step(stmt)
+        
+        if step_result != SQLITE_OK && step_result != SQLITE_DONE {
+            sqlite3_finalize(stmt)
+            if (sqlite3_errmsg(db)) != nil {
+                let msg = "SQLiteDB - failed to execute SQL:\(sql)"
+                print(msg)
+            }
+            
+            return false
+        }
+        
+        sqlite3_finalize(stmt)
+        return true
+    }
+    
+    
+    func getUserFromUsername(username: String) -> [User] {
+        let sql = "SELECT * FROM " + DBHandler.TBL_USER + " WHERE username = '\(username)';";
+        
+        var userArr = [User]()
+        
+        //sqlite3_stmt pointer
+        var stmt:OpaquePointer? = nil
+        
+        // compiler
+        let prepare_result = sqlite3_prepare(self.db, sql, -1, &stmt, nil)
+        if prepare_result != SQLITE_OK {
+            sqlite3_finalize(stmt)
+            if (sqlite3_errmsg(self.db)) != nil {
+                let msg = "SQLiteDB - failed to prepare SQL:\(sql)"
+                print(msg)
+            }
+        }
+        
+        //step
+        if (sqlite3_step(stmt) == SQLITE_ROW) {
+            let id = sqlite3_column_int(stmt, 0)
+            let username = String.init(cString: UnsafePointer(sqlite3_column_text(stmt, 1)))
+            let password = String.init(cString: UnsafePointer(sqlite3_column_text(stmt, 2)))
+            let email = String.init(cString: UnsafePointer(sqlite3_column_text(stmt, 3)))
+            let dorm = String.init(cString: UnsafePointer(sqlite3_column_text(stmt, 4)))
+            let college = String.init(cString: UnsafePointer(sqlite3_column_text(stmt, 5)))
+            
+            let user = User(id: Int(id), username: username, email: email, password: password, dorm: dorm, college: college)
+            userArr.append(user)
+        }
+        
+        //finalize
+        sqlite3_finalize(stmt)
+        
+        return userArr
     }
 
 }

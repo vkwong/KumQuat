@@ -262,7 +262,7 @@
                                 <items>
                                     <navigationItem id="FD7-Gl-GFk">
                                         <nil key="title"/>
-                                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="283-tC-dnS">
+                                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="283-tC-dnS">
                                             <rect key="frame" x="142.66666666666666" y="7.6666666666666679" width="128.99999999999997" height="29.000000000000004"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <segments>
@@ -418,9 +418,6 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="4Tx-m4-acY"/>
                     </view>
-                    <connections>
-                        <outlet property="postReplyChildCell" destination="4lI-Wo-ZcS" id="YDq-TL-HZv"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zeg-zX-uI4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

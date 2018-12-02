@@ -10,7 +10,7 @@ import UIKit
 
 class PostReplyViewController: UIViewController {
 
-    @IBOutlet weak var postReplyMainCell: PostCellTableViewCell!
+//    @IBOutlet weak var postReplyMainCell: PostCellTableViewCell!
     @IBOutlet weak var postReplyChildCell: UITableViewCell!
     override func viewDidLoad() {
         super.viewDidLoad()

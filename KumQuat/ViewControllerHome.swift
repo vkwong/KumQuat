@@ -35,7 +35,7 @@ class ViewControllerHome: UIViewController, UITableViewDataSource {
         // Do any additional setup after loading the view, typically from a nib.
         
 //
-//        print(dbHandler.insertData(username: "vbach", password: "324567hgfdd", email: "xxx@wustl.edu"))
+        print(dbHandler.insertData(username: "vbach", password: "324567hgfdd", email: "xxx@wustl.edu"))
 
         let postCell = UINib(nibName: "PostCellTableViewCell", bundle: nil)
         feedTableView.register(postCell, forCellReuseIdentifier: "postCell")

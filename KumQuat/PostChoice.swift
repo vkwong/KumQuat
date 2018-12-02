@@ -8,7 +8,13 @@
 import UIKit
 
 class PostChoice: UIViewController {
-
+    var table: UITableView!
+    var dbHandler: DBHandler!
+    var message: String!
+    var authorId: Int!
+    var dorm: String!
+    var college: String!
+    
     @IBOutlet weak var postType: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,12 +30,17 @@ class PostChoice: UIViewController {
     }
 
     @IBAction func postAsVisible(_ sender: UIButton) {
-        dismiss(animated: true, completion: nil)
-        //code here to set the user to be visible
+        if dbHandler!.createPost(author: authorId!, content: message!, dorm: dorm!, college: college!, locationShared: false, isAnon: false, timestamp: Int(NSDate().timeIntervalSince1970), parent_post: -1){
+            
+        }
+        
+        performSegue(withIdentifier: "visibleToFeed", sender: self)
     }
     
     @IBAction func postAsAnonymous(_ sender: UIButton) {
-        dismiss(animated: true, completion: nil)
-        //code here to set the user to be anonymous
+        if dbHandler!.createPost(author: authorId!, content: message!, dorm: dorm!, college: college!, locationShared: false, isAnon: true, timestamp: Int(NSDate().timeIntervalSince1970), parent_post: -1){
+            
+        }
+        performSegue(withIdentifier: "anonToFeed", sender: self)
     }
 }

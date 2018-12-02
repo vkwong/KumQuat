@@ -8,36 +8,74 @@
 
 import UIKit
 
-class SettingsViewController: UIViewController {
-    
+class SettingsViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+
     var id: Int?
+    var dorms: [String] = []
+    var currentCollege: String?
+    var currentDorm: String?
     
     @IBOutlet weak var Username: UIButton!
     @IBOutlet weak var Email: UIButton!
     @IBOutlet weak var Password: UIButton!
-    @IBOutlet weak var School: UIButton!
-    @IBOutlet weak var Dorm: UIButton!
+    @IBOutlet weak var dorm: UIPickerView!
     
     
     let dbHandler: DBHandler = DBHandler()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        //TODO: suppose we have known username, email, school and dorm of the user.
+
         id = UserDefaults().integer(forKey: "id")
-        
         Email.setTitle(UserDefaults().string(forKey: "email"), for: .normal)
         Username.setTitle(UserDefaults().string(forKey: "username"), for: .normal)
-        School.setTitle(UserDefaults().string(forKey: "school"), for: .normal)
-        Dorm.setTitle(UserDefaults().string(forKey: "dorm"), for: .normal)
+//        School.setTitle(UserDefaults().string(forKey: "school"), for: .normal)
+//        Dorm.setTitle(UserDefaults().string(forKey: "dorm"), for: .normal)
         Password.setTitle(UserDefaults().string(forKey: "password"), for: .normal)
-    }
+        
+        currentDorm = UserDefaults.standard.string(forKey: "dorm")
+        
+        
 
+        
+        dorm.dataSource = self
+        dorm.delegate = self
+        
+        currentCollege = UserDefaults.standard.string(forKey: "school")
+        if currentCollege == "Washington University in St. Louis" {
+            dorms = Util.getDorms(college: .wustl)
+        } else if currentCollege == "Webster University" {
+            dorms = Util.getDorms(college: .webster)
+        } else if currentCollege == "Saint Louis University" {
+            dorms = Util.getDorms(college: .slu)
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        for i in 0..<dorms.count {
+            if dorms[i] == currentDorm {
+                dorm.selectRow(i, inComponent: 0, animated: false)
+            }
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return dorms.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return dorms[row]
+    }
+    
     
     @IBAction func updateUserName(_ sender: Any) {
         let name = UIAlertController(title: "New username", message: nil, preferredStyle: .alert)
@@ -117,17 +155,7 @@ class SettingsViewController: UIViewController {
         self.present(password, animated: true)
     }
     
-    @IBAction func changeSchool(_ sender: Any) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ChannelViewController") as? ChannelViewController
-        vc?.cond = 0
-        self.present(vc!, animated: true, completion: nil)
-    }
-    
-    @IBAction func changeDorm(_ sender: Any) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ChannelViewController") as? ChannelViewController
-        vc?.cond = 1
-        self.present(vc!, animated: true, completion: nil)
-    }
+   
     
     @IBAction func signOut(_ sender: UIButton) {
         let alert = UIAlertController(title: "Are you sure you want to sign out?", message: nil, preferredStyle: .alert)
@@ -173,16 +201,20 @@ class SettingsViewController: UIViewController {
 
     
     @IBAction func save(_ sender: Any) {
-        let newSchool = School.titleLabel!.text!
-        let newDorm = Dorm.titleLabel!.text!
+        let index = dorm.selectedRow(inComponent: 0)
+        let newDorm = dorms[index]
+        
+        var alert:UIAlertController!
         
         if dbHandler.update(newData: newDorm, id: id!, cond: 3){
             UserDefaults.standard.set(newDorm, forKey: "dorm")
+            alert = UIAlertController(title: "Changes saved", message: "Your dorm has been updated to \(newDorm)", preferredStyle: .alert)
+        } else {
+            alert = UIAlertController(title: "Update fail", message: "Failed to update your dorn to \(newDorm).  Please try again later.", preferredStyle: .alert)
         }
         
-        if dbHandler.update(newData: newSchool, id: id!, cond: 4){
-            UserDefaults.standard.set(newSchool, forKey: "school")
-        }
-        
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+
     }
 }

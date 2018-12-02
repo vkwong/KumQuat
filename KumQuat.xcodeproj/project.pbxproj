@@ -31,7 +31,6 @@
 		68D11F6621B37BC300503DD3 /* DormChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D11F6021B37BC300503DD3 /* DormChannel.swift */; };
 		68D11F6721B37BC300503DD3 /* ChildCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D11F6121B37BC300503DD3 /* ChildCell.swift */; };
 		68D11F6821B37BC300503DD3 /* down-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 68D11F6221B37BC300503DD3 /* down-arrow.png */; };
-		68D11F6C21B383DE00503DD3 /* ChannelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D11F6921B383DE00503DD3 /* ChannelViewController.swift */; };
 		68D11F6D21B383DE00503DD3 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D11F6A21B383DE00503DD3 /* SettingsViewController.swift */; };
 		68D11F6E21B383DE00503DD3 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D11F6B21B383DE00503DD3 /* FeedbackViewController.swift */; };
 		9EE41E8F21A4678B00E61EAC /* dbHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE41E8E21A4678A00E61EAC /* dbHandler.swift */; };
@@ -198,7 +197,6 @@
 		68D11F6021B37BC300503DD3 /* DormChannel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DormChannel.swift; sourceTree = "<group>"; };
 		68D11F6121B37BC300503DD3 /* ChildCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChildCell.swift; sourceTree = "<group>"; };
 		68D11F6221B37BC300503DD3 /* down-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "down-arrow.png"; sourceTree = "<group>"; };
-		68D11F6921B383DE00503DD3 /* ChannelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelViewController.swift; sourceTree = "<group>"; };
 		68D11F6A21B383DE00503DD3 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		68D11F6B21B383DE00503DD3 /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		9EE41E8E21A4678A00E61EAC /* dbHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = dbHandler.swift; sourceTree = "<group>"; };
@@ -265,7 +263,6 @@
 				68D11F5D21B37BC200503DD3 /* PostChoice.swift */,
 				66E8804121A3758900918EBA /* ViewControllerUserTableViewCell.swift */,
 				6841F2CE21A919A7006FA965 /* LoginPage.swift */,
-				68D11F6921B383DE00503DD3 /* ChannelViewController.swift */,
 				68D11F6B21B383DE00503DD3 /* FeedbackViewController.swift */,
 				68D11F6A21B383DE00503DD3 /* SettingsViewController.swift */,
 				68B6BA7C21B2E2090052A3B4 /* PostReplyViewController.swift */,
@@ -603,7 +600,6 @@
 				68D11F6D21B383DE00503DD3 /* SettingsViewController.swift in Sources */,
 				66E87F97219DF8EA00918EBA /* AppDelegate.swift in Sources */,
 				9EE41E8F21A4678B00E61EAC /* dbHandler.swift in Sources */,
-				68D11F6C21B383DE00503DD3 /* ChannelViewController.swift in Sources */,
 				66E8803E21A36CF200918EBA /* Post.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
